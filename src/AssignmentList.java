@@ -7,33 +7,43 @@ import java.util.List;
  * Purpose:
  */
 
-public class AssignmentWarehouse {
+public class AssignmentList {
     private List<Assignment> assignments;
     private final int MAX_WEIGHT;
     private int currentTotalWeight;
 
-    public AssignmentWarehouse() {
+    public AssignmentList() {
         this.assignments = new ArrayList<>();
         this.MAX_WEIGHT = 100;
         this.currentTotalWeight = 0;
     }
 
-    private boolean maxWeightWillBeExceeded(Assignment assignment) {
+    public boolean maxWeightWillBeExceeded(Assignment assignment) {
         return this.currentTotalWeight + assignment.getWeight() > MAX_WEIGHT;
     }
 
-    /**
-     * Adds a new assignment if the weight of the assignment does not exceed the MAX_WEIGHT (100).
-     * @param assignment
-     */
+    public boolean weightIsLessThanZero(Assignment assignment) {
+        return assignment.getWeight() <= 0;
+    }
+
+    public int getCurrentTotalWeight() {
+        return currentTotalWeight;
+    }
+
     public void add(Assignment assignment) {
-        if (maxWeightWillBeExceeded(assignment)) {
-            System.out.println("Weight will exceed max weight of 100!");
+        if (maxWeightWillBeExceeded(assignment) || weightIsLessThanZero(assignment)) {
             return;
         }
 
         this.currentTotalWeight += assignment.getWeight();
         this.assignments.add(assignment);
+    }
+
+    public void remove(Assignment assignment) {
+        if (this.assignments.contains(assignment)) {
+            currentTotalWeight -= assignment.getWeight();
+            this.assignments.remove(assignment);
+        }
     }
 
     public List<Assignment> getAssignments() {

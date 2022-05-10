@@ -1,3 +1,5 @@
+import java.util.Objects;
+
 /**
  * Author: Robert B. Mittnight III
  * Date: 5/9/2022
@@ -13,11 +15,24 @@ public class Assignment {
         this.weight = weight;
     }
 
+    public int getWeight() {
+        return weight;
+    }
+
     public double getGrade() {
         return grade;
     }
 
-    public int getWeight() {
-        return weight;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Assignment that = (Assignment) o;
+        return Double.compare(that.grade, grade) == 0 && weight == that.weight;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(grade, weight);
     }
 }
