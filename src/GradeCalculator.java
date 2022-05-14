@@ -1,3 +1,4 @@
+
 /**
  * Author: Robert B. Mittnight III
  * Date: 5/10/2022
@@ -5,34 +6,24 @@
  */
 
 public class GradeCalculator {
-    private AssignmentList assignments;
 
-    public GradeCalculator(AssignmentList assignments) {
-        this.assignments = assignments;
+    public double calcFinalGrade(AssignmentList assignmentList, double desiredGrade) {
+        double currentGrade = getWeightedGrade(assignmentList);
+        int finalExamWeight = 100 - assignmentList.getCurrentTotalWeight();
+        double weight = convertWeightToDecimal(finalExamWeight);
+        return (desiredGrade - (1 - weight) * currentGrade) / weight;
     }
 
-    public double getAverageOfAssignments() {
-        if (assignments.getAssignments().isEmpty()) {
-            return 0.0;
+    public double getWeightedGrade(AssignmentList assignmentList) {
+        double weightedGrade = 0;
+        for (Assignment assignment : assignmentList.getAssignments()) {
+            weightedGrade += assignment.getWeight() * assignment.getGrade();
         }
 
-        double sum = 0.0;
-        for (Assignment assignment : assignments.getAssignments()) {
-            sum += assignment.getGrade();
-        }
-
-        return sum / assignments.getAssignments().size();
+        return weightedGrade / assignmentList.getCurrentTotalWeight();
     }
 
-    public double getFinalGrade() {
-        if (assignments.getCurrentTotalWeight() != 100) {
-            return 0.0;
-        }
-
-        return 0.0;
+    public double convertWeightToDecimal(int weight) {
+        return (double) weight / 100;
     }
 }
-// Gather the numbers you would like to average
-// Determine the weight value of each number
-// Multiply each number by its weighting factor (w)
-// Add the resulting numbers together to find the weighted average

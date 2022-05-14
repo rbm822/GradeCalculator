@@ -6,14 +6,13 @@
 
 public class GradeCalculatorMain {
     public static void main(String[] args) {
+        GradeCalculator gradeCalculator = new GradeCalculator();
         AssignmentList assignmentList = new AssignmentList();
-        GradeCalculator gradeCalculator = new GradeCalculator(assignmentList);
+        assignmentList.add(new Assignment(80, 40));
+        assignmentList.add(new Assignment(65, 20));
+        assignmentList.add(new Assignment(65, 20));
 
-        assignmentList.add(new Assignment(50, 10));
-        assignmentList.add(new Assignment(60, 10));
-        assignmentList.add(new Assignment(70, 10));
-        assignmentList.add(new Assignment(80, 10));
-
-        System.out.println(gradeCalculator.getAverageOfAssignments());
+        System.out.println("Current grade: " + gradeCalculator.getWeightedGrade(assignmentList));
+        System.out.println("Grade needed: " + gradeCalculator.calcFinalGrade(assignmentList, 90));
     }
 }
