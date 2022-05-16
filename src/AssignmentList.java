@@ -18,6 +18,10 @@ public class AssignmentList {
         this.currentTotalWeight = 0;
     }
 
+    public int getCurrentTotalWeight() {
+        return currentTotalWeight;
+    }
+
     public boolean maxWeightWillBeExceeded(Assignment assignment) {
         return this.currentTotalWeight + assignment.getWeight() > MAX_WEIGHT;
     }
@@ -26,8 +30,12 @@ public class AssignmentList {
         return assignment.getWeight() <= 0;
     }
 
-    public int getCurrentTotalWeight() {
-        return currentTotalWeight;
+    public boolean isAtMaxWeight() {
+        return this.currentTotalWeight == 100;
+    }
+
+    public boolean isEmpty() {
+        return this.assignments.isEmpty();
     }
 
     public void add(Assignment assignment) {
@@ -44,6 +52,10 @@ public class AssignmentList {
             currentTotalWeight -= assignment.getWeight();
             this.assignments.remove(assignment);
         }
+    }
+
+    public void clearAssignments() {
+        this.assignments.clear();
     }
 
     public List<Assignment> getAssignments() {

@@ -6,24 +6,48 @@
  */
 
 public class GradeCalculator {
+    private double currentGrade;
+    private double gradeNeededForDesiredGrade;
+    private AssignmentList assignments;
 
-    public double calcFinalGrade(AssignmentList assignmentList, double desiredGrade) {
-        double currentGrade = getWeightedGrade(assignmentList);
-        int finalExamWeight = 100 - assignmentList.getCurrentTotalWeight();
-        double weight = convertWeightToDecimal(finalExamWeight);
-        return (desiredGrade - (1 - weight) * currentGrade) / weight;
+    public GradeCalculator(AssignmentList assignments) {
+        this.assignments = assignments;
     }
 
-    public double getWeightedGrade(AssignmentList assignmentList) {
+    public void calculateGrades(double desiredGrade) {
+        calcCurrentGrade();
+        calcDesiredFinalGrade(desiredGrade);
+    }
+
+    public double getCurrentGrade() {
+        return currentGrade;
+    }
+
+    public double getGradeNeededForDesiredGrade() {
+        return gradeNeededForDesiredGrade;
+    }
+
+    public void clearGrades() {
+        this.currentGrade = 0;
+        this.gradeNeededForDesiredGrade = 0;
+    }
+
+    private void calcCurrentGrade() {
         double weightedGrade = 0;
-        for (Assignment assignment : assignmentList.getAssignments()) {
+        for (Assignment assignment : assignments.getAssignments()) {
             weightedGrade += assignment.getWeight() * assignment.getGrade();
         }
 
-        return weightedGrade / assignmentList.getCurrentTotalWeight();
+        this.currentGrade = weightedGrade / assignments.getCurrentTotalWeight();
     }
 
-    public double convertWeightToDecimal(int weight) {
+    private void calcDesiredFinalGrade(double desiredGrade) {
+        int finalExamWeight = 100 - assignments.getCurrentTotalWeight();
+        double weight = convertWeightToDecimal(finalExamWeight);
+        this.gradeNeededForDesiredGrade = (desiredGrade - (1 - weight) * currentGrade) / weight;
+    }
+
+    private double convertWeightToDecimal(int weight) {
         return (double) weight / 100;
     }
 }
