@@ -31,7 +31,7 @@ public class AssignmentList {
     }
 
     public boolean isAtMaxWeight() {
-        return this.currentTotalWeight == 100;
+        return this.currentTotalWeight == MAX_WEIGHT;
     }
 
     public boolean isEmpty() {
@@ -39,7 +39,9 @@ public class AssignmentList {
     }
 
     public void add(Assignment assignment) {
-        if (maxWeightWillBeExceeded(assignment) || weightIsLessThanZero(assignment)) {
+        if (maxWeightWillBeExceeded(assignment) ||
+                weightIsLessThanZero(assignment) ||
+                assignments.contains(assignment)) {
             return;
         }
 
@@ -56,6 +58,10 @@ public class AssignmentList {
 
     public void clearAssignments() {
         this.assignments.clear();
+    }
+
+    public void emptyWeight() {
+        this.currentTotalWeight = 0;
     }
 
     public List<Assignment> getAssignments() {

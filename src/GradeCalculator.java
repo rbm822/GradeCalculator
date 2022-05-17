@@ -1,3 +1,4 @@
+import java.text.DecimalFormat;
 
 /**
  * Author: Robert B. Mittnight III
@@ -17,14 +18,6 @@ public class GradeCalculator {
     public void calculateGrades(double desiredGrade) {
         calcCurrentGrade();
         calcDesiredFinalGrade(desiredGrade);
-    }
-
-    public double getCurrentGrade() {
-        return currentGrade;
-    }
-
-    public double getGradeNeededForDesiredGrade() {
-        return gradeNeededForDesiredGrade;
     }
 
     public void clearGrades() {
@@ -49,5 +42,18 @@ public class GradeCalculator {
 
     private double convertWeightToDecimal(int weight) {
         return (double) weight / 100;
+    }
+
+    public String toString() {
+        DecimalFormat df = new DecimalFormat("#.##");
+        String grade = "Current grade: " + df.format(currentGrade);
+
+        if (assignments.isAtMaxWeight()) {
+            grade += "";
+        } else {
+            grade += " Grade needed for an A: " + df.format(gradeNeededForDesiredGrade);
+        }
+
+        return grade;
     }
 }

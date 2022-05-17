@@ -29,19 +29,13 @@ public class UserInterface {
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // Configure Input Panel
-        buildInputPanels(inputViewPanels, 5);
+        buildInputPanels(inputViewPanels, 3);
         displayPanels(mainFrame, inputViewPanels);
 
         // Output Panel
         JPanel outputPnl = new JPanel();
-        JLabel currentGradeLbl = new JLabel("Current Grade: ");
-        JLabel desiredGradeLbl = new JLabel("Required Grade for an 'A': ");
-        JLabel currentGradeResultsLbl = new JLabel();
-        JLabel desiredGradeResultsLbl = new JLabel();
-        outputPnl.add(currentGradeLbl);
-        outputPnl.add(currentGradeResultsLbl);
-        outputPnl.add(desiredGradeLbl);
-        outputPnl.add(desiredGradeResultsLbl);
+        JLabel resultsLbl = new JLabel("");
+        outputPnl.add(resultsLbl);
         mainFrame.add(outputPnl);
 
         // Button Panel
@@ -54,24 +48,31 @@ public class UserInterface {
 
         // Event Listeners
         calcGradeBtn.addActionListener(e -> {
+            // Allows the list of assignments to be built if some TextFields are blank.
             try {
                 buildAssignmentList();
             } catch (NumberFormatException exception) {}
 
             gradeCalculator.calculateGrades(90);
-            displayGrade(currentGradeResultsLbl, gradeCalculator.getCurrentGrade());
-            displayGrade(desiredGradeResultsLbl, gradeCalculator.getGradeNeededForDesiredGrade());
+            resultsLbl.setText(gradeCalculator.toString());
         });
 
         clearBtn.addActionListener(e -> {
+            // TODO Is there a better way to do this?
+            for (InputView view : inputViewPanels) {
+                view.getGradeInput().setText("");
+                view.getWeightInput().setText("");
+            }
+
+            resultsLbl.setText("");
+            assignments.clearAssignments();
+            assignments.emptyWeight();
+            // Sets the grades to 0 otherwise the previous grades will be in new calculations.
+            gradeCalculator.clearGrades();
         });
 
         // Display the main JFrame.
         mainFrame.setVisible(true);
-    }
-
-    public void displayGrade(JLabel label, double grade) {
-        label.setText(label.getText() + " " + grade);
     }
 
     public void buildAssignmentList() {
